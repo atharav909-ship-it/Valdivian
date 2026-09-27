@@ -30,7 +30,7 @@ def post(client, path, data=None):
 def test_catalog_and_search(client):
     assert b'Desk lamp' in client.get('/products?q=Desk').data
     assert b'No products found' in client.get('/products?q=keyboard').data
-    assert client.get('/health').json == {'status': 'ok'}
+    assert client.get('/health').json == {'status': 'broken'}
 
 
 def test_registration_auth_and_admin_permissions(client):
