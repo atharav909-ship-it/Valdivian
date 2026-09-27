@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: valdivian
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: flask --app app init-db
+    startCommand: gunicorn 'app:app'
+    autoDeployTrigger: off
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: valdivian-db
+          property: connectionString
+
+databases:
+  - name: valdivian-db
+    databaseName: valdivian
+    user: valdivian
