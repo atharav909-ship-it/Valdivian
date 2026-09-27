@@ -356,5 +356,27 @@ def create_app(test_config=None):
 
 app = create_app()
 
+@app.cli.command("make-admin")
+def make_admin():
+    """Promote an existing user to admin."""
+    email = input("Enter user email: ").strip().lower()
+
+    user = db.session.execute(
+        select(User).where(User.email == email)
+    ).scalar_one_or_none()
+
+    if user is None:
+        print("User not found.")
+        return
+
+    if user.is_admin:
+        print(f"{email} is already an admin.")
+        return
+
+    user.is_admin = True
+    db.session.commit()
+
+    print(f"{email} is now an admin.")
+
 if __name__ == '__main__':
     app.run(debug=True)
