@@ -146,7 +146,7 @@ The test suite covers important application functionality including authenticati
 
 ## CI/CD Pipeline
 
-GitHub Actions is used for continuous integration.
+GitHub Actions is used for continuous integration and automated deployment.
 
 Whenever code is pushed to the `main` branch, GitHub Actions automatically:
 
@@ -154,13 +154,15 @@ Whenever code is pushed to the `main` branch, GitHub Actions automatically:
 2. Configures the Python environment.
 3. Installs the project dependencies.
 4. Executes the automated Pytest test suite.
-5. Reports whether the workflow passed or failed.
+5. If the tests pass, triggers the Render deploy hook.
+6. Render deploys the latest version of the application.
+
+If the automated tests fail, the deployment job does not run. This prevents a failing version from being deployed through the CI/CD pipeline.
 
 The workflow configuration is stored in:
 
 ```text
 .github/workflows/ci-cd.yml
-```
 
 This ensures that changes pushed to the repository are automatically tested before deployment-related actions are performed.
 
